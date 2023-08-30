@@ -1,10 +1,14 @@
 import { useState, useEffect } from 'react'
 import InputWithIcon from '../InputWithIcon';
-import { Dehaze } from '@mui/icons-material';
 import Icon from './Icon';
+import { Dehaze } from '@mui/icons-material';
+import Sidebar from './Sidebar';
+import { Link } from 'react-router-dom';
 //navbar
-const Nav = () => {
+
+const Nav = ({ data }) => {
     const [isSticky, setIsSticky] = useState(false);
+    const [open, setOpen] = useState(false);
 
     const handleScroll = () => {
         setIsSticky(window.scrollY >= 100)
@@ -18,22 +22,28 @@ const Nav = () => {
     }, []);
 
     return (
-        <div>
-            <div className={`flex py-3 w-full justify-between navbar ${isSticky ? 'sticky' : ''} `}>
-                <div className="flex px-7 w-1/6 items-center " style={{ borderColor: '#454545' }}>
-                    <Dehaze className="text-white mr-5 cursor-pointer" />
-                    <div >
-                        <img src="https://music.youtube.com/img/on_platform_logo_dark.svg" alt="Icon.jpg" className="" />
+        <>
+            <div className={`navbar ${isSticky ? 'sticky top-0' : ''}`} style={{ zIndex: 100 }}>
+                <div className='flex justify-between items-center'>
+                    <div className='flex w-1/6 bg-grey-900 py-5 px-7 cursor-pointer' onClick={() => setOpen(!open)}>
+                        <Dehaze className="text-white mr-5 " />
+                        <div>
+                            <img
+                                src="https://music.youtube.com/img/on_platform_logo_dark.svg"
+                                alt="Icon.jpg"
+                            />
+                        </div>
                     </div>
-                </div>
-                <div className="flex justify-start w-3/6">
-                    <InputWithIcon />
-                </div>
-                <div className="w-1/6">
-                    <Icon />
+                    <div className={`${!open ? 'w-3/6' : 'w-4/6'}`}>
+                        <InputWithIcon />
+                    </div>
+                    <Link to="/signUp" className='w-1/6'>
+                        <Icon/>
+                    </Link>
                 </div>
             </div>
-        </div>
+            <Sidebar open={open} setOpen={setOpen} tru={isSticky} main={data} />
+        </>
     )
 }
 
